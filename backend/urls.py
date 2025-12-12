@@ -9,17 +9,29 @@ def health(request):
     return JsonResponse({"status": "ok"})
 
 def media_debug(request):
-    root = Path(settings.MEDIA_ROOT)
-    products_dir = root / "products"
-    files = []
-    if products_dir.exists():
-        files = sorted([p.name for p in products_dir.iterdir() if p.is_file()])[:50]
-    return JsonResponse({
-        "MEDIA_ROOT": str(root),
-        "products_dir_exists": products_dir.exists(),
-        "sample_files": files,
-        "cwd": os.getcwd(),
-    })
+    try:
+        root = Path(getattr(settings, "MEDIA_ROOT", ""))
+        products_dir = root / "products"
+        files = []
+
+        if products_dir.exists():
+            files = sorted([p.name for p in products_dir.iterdir() if p.is_file()])[:50]
+
+        return JsonResponse({
+            "cwd": os.getcwd(),
+            "MEDIA_URL": getattr(settings, "MEDIA_URL", None),
+            "MEDIA_ROOT": str(root),
+            "products_dir": str(products_dir),
+            "products_dir_exists": products_dir.exists(),
+            "sample_files": files,
+        })
+    except Exception as e:
+        return JsonResponse({
+            "error": str(e),
+            "cwd": os.getcwd(),
+            "MEDIA_URL": getattr(settings, "MEDIA_URL", None),
+            "MEDIA_ROOT": str(getattr(settings, "MEDIA_ROOT", None)),
+        }, status=500)
 
 urlpatterns = [
     path("health/", health),
