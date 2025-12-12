@@ -1,0 +1,42 @@
+# ========================
+# Environment variables
+# ========================
+.env
+.env.*
+!.env.example
+
+# ========================
+# Python / Django
+# ========================
+__pycache__/
+*.py[cod]
+*.log
+*.pot
+*.pyc
+
+# ========================
+# Virtual environments
+# ========================
+venv/
+.venv/
+
+# ========================
+# Django specific
+# ========================
+db.sqlite3
+media/
+staticfiles/
+
+# ========================
+# Build / dist
+# ========================
+build/
+dist/
+
+# ========================
+# OS / Editor junk
+# ========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
