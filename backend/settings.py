@@ -110,14 +110,12 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=(
-            os.environ.get(
-                "DJANGO_DATABASE_URL",
-                f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}"
-            )
+        default=os.environ.get("DATABASE_URL") or os.environ.get(
+            "DJANGO_DATABASE_URL",
+            f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}",
         ),
         conn_max_age=int(os.environ.get("DJANGO_DB_CONN_MAX_AGE", 600)),
-        ssl_require=os.environ.get("DJANGO_DB_SSL", "False") == "True",
+        ssl_require=env_bool("DJANGO_DB_SSL", False),
     )
 }
 
