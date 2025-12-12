@@ -39,9 +39,6 @@ SECRET_KEY = os.environ.get(
     "django-insecure-gc5gih7414595k_g%a(agg-l+66ue)u&5up)v(f79xlykp_ah7",
 )
 
-# Debug: default True for local dev; in production set DJANGO_DEBUG=False
-DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
-
 # Allowed hosts and CSRF origins via env vars.
 DEFAULT_ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 ALLOWED_HOSTS = [
