@@ -1,9 +1,27 @@
 from django.urls import path
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.http import JsonResponse
+
+
+def api_root(request):
+    return JsonResponse({
+        "products": "/api/products/",
+        "categories": "/api/categories/",
+        "brands": "/api/brands/",
+        "auth": {
+            "register": "/api/auth/register/",
+            "login": "/api/auth/login/",
+            "token": "/api/auth/token/",
+            "refresh": "/api/auth/token/refresh/",
+        }
+    })
+
 
 
 urlpatterns = [
+
+    path("", api_root),
     #Products, Categories and Brands
     path("categories/", views.category_list, name="category-list"),
     path("brands/", views.brand_list, name="brand-list"),
