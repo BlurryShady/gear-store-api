@@ -2,9 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.http import JsonResponse
+from django.views.generic import RedirectView  
 import os
 from pathlib import Path
 from django.views.static import serve
+from django.shortcuts import redirect
+
+
 
 def health(request):
     return JsonResponse({"status": "ok"})
@@ -34,14 +38,14 @@ def media_debug(request):
             "MEDIA_ROOT": str(getattr(settings, "MEDIA_ROOT", None)),
         }, status=500)
 
+
 urlpatterns = [
+    path("", lambda request: redirect("/health/")),
     path("health/", health),
     path("admin/", admin.site.urls),
     path("api/", include("store.urls")),
-    path("_media_debug/", media_debug),  # remove later
 ]
 
-# Serve media files (Render / portfolio demo)
 urlpatterns += [
     path("media/<path:path>", serve, {"document_root": settings.MEDIA_ROOT}),
 ]
