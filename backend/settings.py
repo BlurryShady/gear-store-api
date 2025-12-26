@@ -13,7 +13,9 @@ from datetime import timedelta
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-load_dotenv()
+
+if os.getenv("DYNO") is None:
+    load_dotenv()
 
 import dj_database_url
 
@@ -23,7 +25,7 @@ def env_bool(name: str, default: bool = False) -> bool:
         return default
     return val.strip().lower() in ("1", "true", "yes", "y", "on")
 
-DEBUG = env_bool("DEBUG", False)
+DEBUG = env_bool("DJANGO_DEBUG", False)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -115,9 +117,10 @@ DATABASES = {
             f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}",
         ),
         conn_max_age=int(os.environ.get("DJANGO_DB_CONN_MAX_AGE", 600)),
-        ssl_require=env_bool("DJANGO_DB_SSL", False),
+        ssl_require=not DEBUG,
     )
 }
+
 
 
 # Password validation
